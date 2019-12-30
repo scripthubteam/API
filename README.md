@@ -5,18 +5,19 @@
 
 ## GET
 
-### `/bot/botId`
 
-Obtén los datos de un bot.
+### /bot/[botId]
 
-#### `/bot/certified/:botId`
+Obtén los datos de registro de un bot.
 
-Retorna un booleano si el bot está verficiado o no.
+### /bot/certified/[botId] `(método rápido)`
 
-### `/bots/noapproved`
+Obtén un booleano si el bot está verificado o no.
 
-Obtén los datos de los bots que no han sido aprobados aún.
+### /user/[userId]
 
-### `/user/userId`
+Obtén los datos de registro de un usuario de Script Hub.
 
-Obtén los datos públicos de un usuario de Script Hub.
+### /bots/noapproved/ 
+
+Obtén los datos de los bots no aprobados en un array.
