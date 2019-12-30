@@ -101,7 +101,7 @@ app.get("/user/:userId", (req, res) => {
   let user = {
     discordData: client.guilds
       .get(process.env.CARDINAL_SERVER)
-      .members.get(userId).user,
+      .members.get(userId),
     shData: "Los datos de Script Hub no están disponibles en esta versión."
   };
 
