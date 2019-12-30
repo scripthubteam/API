@@ -4,8 +4,8 @@
 
 # ¿Cómo usarlo?
 
-`botId`: ID de Discord del bot.
-`userId`: ID de Discord del usuario.
+> `botId`: ID de Discord del bot.
+> `userId`: ID de Discord del usuario.
 
 ## GET
 
