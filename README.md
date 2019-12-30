@@ -1,10 +1,13 @@
 # API
+
 🎣 Script Hub API v1.0
 
 # ¿Cómo usarlo?
 
-## GET
+`botId`: ID de Discord del bot.
+`userId`: ID de Discord del usuario.
 
+## GET
 
 ### /bot/[botId]
 
@@ -18,6 +21,6 @@ Obtén un booleano si el bot está verificado o no.
 
 Obtén los datos de registro de un usuario de Script Hub.
 
-### /bots/noapproved/ 
+### /bots/noapproved/
 
 Obtén los datos de los bots no aprobados en un array.
