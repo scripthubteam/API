@@ -86,11 +86,7 @@ function logAction({ date, route, param }) {
   if (!param) {
     param = "No param";
   }
-  let logChan = client.channels
-    .get("606340576740114433")
-    .catch(e =>
-      console.error("[SERVER:LOG] No se puede obtener el canal de registros.")
-    );
+  let logChan = client.channels.get("606340576740114433");
   return logChan.send(
     "[" + this.date + "] **" + this.route + "** > " + this.param
   );
