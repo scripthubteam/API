@@ -7,6 +7,7 @@ const { Client } = require("discord.js");
 const client = new Client();
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 
 /* Base de Datos */
 const mongoose = require("mongoose");
@@ -78,12 +79,35 @@ async function init() {
     console.log("[SERVER:WEBSERVER] Escuchando en puerto " + PORT)
   );
 }
-
+// Log
+function logAction({ date, route, param }) {
+  if (!date || !route)
+    throw new Error("[SERVER:LOG] Error al completar los párametros.");
+  if (!param) {
+    param = "No param";
+  }
+  let logChan = client.channels
+    .get("606340576740114433")
+    .catch(e =>
+      console.error("[SERVER:LOG] No se puede obtener el canal de registros.")
+    );
+  return logChan.send(
+    "[" + this.date + "] **" + this.route + "** > " + this.param
+  );
+}
 // Inicialización
 init();
 
-/* API */
+app.set("trust proxy", 1);
 
+// Limit request
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100
+});
+
+/* API */
+app.use(limiter);
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -91,13 +115,22 @@ app.use(bodyParser.json());
 /* index */
 app.get("/", (req, res) => {
   res.send("API v1.0");
+  logAction({
+    date: new Date(),
+    route: "/",
+    param: "Index"
+  });
 });
 
 /* user */
 app.get("/user/:userId", (req, res) => {
   //
   const userId = req.params.userId;
-
+  logAction({
+    date: new Date(),
+    route: "/user/",
+    param: userId
+  });
   let user = {
     discordData: client.guilds
       .get(process.env.CARDINAL_SERVER)
@@ -123,7 +156,11 @@ app.get("/user/:userId", (req, res) => {
 app.get("/bot/:botId", async (req, res) => {
   //
   const botId = req.params.botId;
-
+  logAction({
+    date: new Date(),
+    route: "/bot/",
+    param: botId
+  });
   let bot = await dbBots.getBot(botId);
 
   if (!botId) return res.send("El párametro botId es necesario.");
@@ -140,7 +177,11 @@ app.get("/bot/:botId", async (req, res) => {
 app.get("/bot/certified/:botId", async (req, res) => {
   //
   const botId = req.params.botId;
-
+  logAction({
+    date: new Date(),
+    route: "/bot/certified/",
+    param: botId
+  });
   if (!botId) return res.send("El párametro botId es necesario.");
 
   let bot = await dbBots
@@ -152,5 +193,9 @@ app.get("/bot/certified/:botId", async (req, res) => {
 /* bots-no-approved-queue */
 app.get("/bots/noapproved", async (req, res) => {
   let queue = await dbBots.getNoApprovedBots();
+  logAction({
+    date: new Date(),
+    route: "/bots/"
+  });
   res.send(queue);
 });
