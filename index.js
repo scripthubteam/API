@@ -87,9 +87,7 @@ function logAction({ date, route, param }) {
     param = "No param";
   }
   let logChan = client.channels.get("606340576740114433");
-  return logChan.send(
-    "[" + this.date + "] **" + this.route + "** > " + this.param
-  );
+  return logChan.send("[" + date + "] **" + route + "** > " + param);
 }
 // Inicialización
 init();
@@ -111,11 +109,6 @@ app.use(bodyParser.json());
 /* index */
 app.get("/", (req, res) => {
   res.send("API v1.0");
-  logAction({
-    date: new Date(),
-    route: "/",
-    param: "Index"
-  });
 });
 
 /* user */
